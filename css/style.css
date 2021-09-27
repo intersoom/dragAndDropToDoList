@@ -1,7 +1,10 @@
+*{
+    box-sizing: content-box;
+}
+
 html, body{
     width: 100vw;
     height: 100vw;
-    
 }
 
 .wrap{
@@ -12,7 +15,8 @@ html, body{
 }
 
 h3{
-    margin: 0;
+    font-size: 1.7em;
+    font-weight: bold;
 }
 
 /*top bar*/
@@ -24,7 +28,7 @@ h3{
 .seperateHr{
     width: 80vw;
     height: 3px;
-    border-top: 2px solid grey;
+    border-top: 2px solid rgb(15 15 15 / 10%);
     margin: 5px 0px 15px 0px;
 }
 
@@ -33,27 +37,30 @@ h3{
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
 }
 
 .todoInput{
     border: none;
     width: 100%;
+    font-size: 13px;
 }
 
 .list{
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
 
-    width: 260px;
+    width: 180px;
     padding: 8px 10px 10px;
+    margin-bottom: 8px;
 
     border-radius: 3px;
     box-shadow: rgb(15 15 15 / 10%) 0px 0px 0px 1px, rgb(15 15 15 / 10%) 0px 2px 4px;
 
-    margin-bottom: 8px;
+    background-color: white;
+    color: grey;
+
+    font-size: 13px;
 }
 
 .listWrap{
@@ -61,15 +68,26 @@ h3{
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .todo{
-    width: 100%;
-    text-align: center;
+    text-align: left;
+    align-items: flex-start;
+
+    font-size: 14px;
+    color: black;
+}
+
+.hide{
+    display: none;
 }
 
 .addNew{
-    width: 100%;
     text-align: center;
+    cursor: pointer;
+}
+
+.addNew:hover{
+    background-color: rgb(194, 195, 200, 10);
 }
