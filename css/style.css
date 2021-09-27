@@ -47,7 +47,7 @@ h3{
 
 .list{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
 
     width: 180px;
@@ -74,6 +74,8 @@ h3{
 .todo{
     text-align: left;
     align-items: flex-start;
+    justify-content: space-between;
+    word-break: break-all;
 
     font-size: 14px;
     color: black;
@@ -91,3 +93,21 @@ h3{
 .addNew:hover{
     background-color: rgb(194, 195, 200, 10);
 }
+
+button{
+    background-color: white;
+    cursor: pointer;
+}
+
+.icons{
+    display: flex;
+    flex-direction: row;
+    align-self: flex-end;
+    opacity: 0;
+}
+
+.todo:hover > .icons{
+    transition: 0.7s ease-in-out;
+    opacity: 1;
+}
+
