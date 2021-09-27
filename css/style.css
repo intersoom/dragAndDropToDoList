@@ -1,0 +1,75 @@
+html, body{
+    width: 100vw;
+    height: 100vw;
+    
+}
+
+.wrap{
+    width: 80vw;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+}
+
+h3{
+    margin: 0;
+}
+
+/*top bar*/
+
+.topBar{
+    width: 80vw;
+}
+
+.seperateHr{
+    width: 80vw;
+    height: 3px;
+    border-top: 2px solid grey;
+    margin: 5px 0px 15px 0px;
+}
+
+/*list*/
+.state{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.todoInput{
+    border: none;
+    width: 100%;
+}
+
+.list{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 260px;
+    padding: 8px 10px 10px;
+
+    border-radius: 3px;
+    box-shadow: rgb(15 15 15 / 10%) 0px 0px 0px 1px, rgb(15 15 15 / 10%) 0px 2px 4px;
+
+    margin-bottom: 8px;
+}
+
+.listWrap{
+    width: 80vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.todo{
+    width: 100%;
+    text-align: center;
+}
+
+.addNew{
+    width: 100%;
+    text-align: center;
+}
