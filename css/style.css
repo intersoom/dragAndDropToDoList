@@ -15,6 +15,7 @@ html, body{
 }
 
 h3{
+    margin-top: 20px;
     font-size: 1.7em;
     font-weight: bold;
 }

@@ -1,9 +1,8 @@
 //list 새로 만들기
 const state = ['.noneState', '.beforeState', '.progressState', '.endState'];
-const todoInputCount = [];
 const addNew = document.querySelectorAll('.addNew');
 
-for (let i = 0; i < 4; i++){
+for (let i = 0; i < state.length; i++){
     addNew[i].addEventListener('click', func=(e)=>{
         //div 태그 추가
         const todoDiv = document.createElement('div');
@@ -15,6 +14,7 @@ for (let i = 0; i < 4; i++){
         const todoDelete = document.createElement('button');
         const editIcon = document.createElement('i');
         const deleteIcon = document.createElement('i');
+        const innerText = document.createElement('p');
 
         todoDiv.classList.add('todo');
         todoDiv.classList.add('list');
@@ -29,13 +29,34 @@ for (let i = 0; i < 4; i++){
 
         todoDiv.appendChild(todoInputText);
         document.querySelector(state[i]).appendChild(todoDiv);
+
+        //todo 내용 입력 후 엔터 입력시
+        enterPressed=()=> {
+            innerText.innerHTML = todoInputText.value;
+            todoDiv.appendChild(innerText);
+            innerText.classList.remove('hide');
+            todoInputText.classList.add('hide');
+            
+            todoEdit.appendChild(editIcon);
+            todoDelete.appendChild(deleteIcon);
+
+            todoDivIcons.appendChild(todoEdit);
+            todoDivIcons.appendChild(todoDelete);
+
+            todoDiv.appendChild(todoDivIcons);
+        };
         
         // 새로 만들기를 제일 밑으로 보내기
         document.querySelector(state[i]).insertAdjacentElement('beforeend', addNew[i]);
 
         // 수정
         todoEdit.addEventListener('click', func=(e)=>{
-            todoInputText.classList.remove('.hide');
+            todoInputText.classList.remove('hide');
+            innerText.classList.add('hide');
+            
+            if (window.event.keyCode == 13) {
+                enterPressed();
+            } 
         })
 
         //삭제
@@ -44,32 +65,16 @@ for (let i = 0; i < 4; i++){
         })
 
         //리스트 이름 작성 -> 글씨로 바꾸기
-        let timer;
 
-        todoInputText.addEventListener('input', func=(e)=>{
-            if (timer) {
-                clearTimeout(timer);
+        todoInputText.onkeyup = func=()=>{
+            if (window.event.keyCode == 13){
+                console.log('enter pressed')
+                enterPressed();
             }
-                
-            timer = setTimeout(function() {
-                todoDiv.innerHTML = todoInputText.value;
-                todoInputText.classList.add('.hide');
-                
-                todoEdit.appendChild(editIcon);
-                todoDelete.appendChild(deleteIcon);
-
-                todoDivIcons.appendChild(todoEdit);
-                todoDivIcons.appendChild(todoDelete);
-
-                todoDiv.appendChild(todoDivIcons);
-            }, 800);
-        });
+        };
 
         
 
     })
 }
-
-
-// list text 입력
 
