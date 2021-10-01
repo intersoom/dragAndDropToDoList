@@ -1,11 +1,12 @@
 //list 새로 만들기
-const state = ['.noneState', '.beforeState', '.progressState', '.endState'];
+const states = document.querySelectorAll('.state');
 const addNew = document.querySelectorAll('.addNew');
+let draggedItem = null;
 
-for (let i = 0; i < state.length; i++){
+for (let i = 0; i < states.length; i++){
     addNew[i].addEventListener('click', func=(e)=>{
         //div 태그 추가
-        const todoDiv = document.createElement('div');
+        const todoDiv = document.createElement('span');
         const todoInputText = document.createElement('input');
         
         //icon 추가
@@ -28,8 +29,8 @@ for (let i = 0; i < state.length; i++){
         deleteIcon.classList.add('fa-trash-alt');
 
         todoDiv.appendChild(todoInputText);
-        document.querySelector(state[i]).appendChild(todoDiv);
-
+        states[i].appendChild(todoDiv);
+        
         //todo 내용 입력 후 엔터 입력시
         enterPressed=()=> {
             innerText.innerHTML = todoInputText.value;
@@ -47,7 +48,7 @@ for (let i = 0; i < state.length; i++){
         };
         
         // 새로 만들기를 제일 밑으로 보내기
-        document.querySelector(state[i]).insertAdjacentElement('beforeend', addNew[i]);
+        states[i].insertAdjacentElement('beforeend', addNew[i]);
 
         // 수정
         todoEdit.addEventListener('click', func=(e)=>{
@@ -61,7 +62,7 @@ for (let i = 0; i < state.length; i++){
 
         //삭제
         todoDelete.addEventListener('click', func=(e)=>{
-            document.querySelector(state[i]).removeChild(todoDiv);
+            states[i].removeChild(todoDiv);
         })
 
         //리스트 이름 작성 -> 글씨로 바꾸기
@@ -72,9 +73,58 @@ for (let i = 0; i < state.length; i++){
                 enterPressed();
             }
         };
-
         
+        //drag and drop 기능 추가
+        todoDiv.draggable = 'true';
 
+        todoDiv.addEventListener('dragstart', function() {
+            draggedItem = todoDiv;
+            todoDiv.classList.add('.dragging');
+            setTimeout(function() {
+                todoDiv.style.display = 'none';
+            }, 0);
+        })
+        
+        todoDiv.addEventListener('dragend', function() {
+          setTimeout(function(){
+            draggedItem.style.display = 'flex';
+            draggedItem = null;
+          }, 0);
+        })
     })
+
+    states[i].addEventListener('dragover', function(e){
+        e.preventDefault();
+    })
+    
+    states[i].addEventListener('dragenter', function(e){
+        e.preventDefault();
+    })
+
+    states[i].addEventListener('dragenter', function(e){
+        const afterElement = getDragAfterElement(states[i], e.clientY);
+
+        if(afterElement == null){
+            this.append(draggedItem);
+            this.insertAdjacentElement('beforeend', addNew[i]);
+        } else {
+            this.insertBefore(draggedItem, afterElement);
+        }
+    })
+
+    function getDragAfterElement(state, y){
+        const draggableElements = [...state.querySelectorAll('.todo:not(.dragging)')];
+
+        return draggableElements.reduce((closest, child) => {
+            const box = child.getBoundingClientRect();
+            const offset = y - box.top - box.height / 2
+            console.log(offset);
+            if (offset < 0 && offset > closest.offset){
+                return { offset: offset, element: child }
+            } else {
+                return closest
+            }
+        }, {offset: Number.NEGATIVE_INFINITY}).element;
+    }
 }
 
