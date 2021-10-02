@@ -3,8 +3,16 @@ const states = document.querySelectorAll('.state');
 const addNew = document.querySelectorAll('.addNew');
 let draggedItem = null;
 
+window.onload = function(){
+    localStorage.clear();
+}
+
+let key = 0;
+let objInnerText = {}
+
 for (let i = 0; i < states.length; i++){
     addNew[i].addEventListener('click', func=(e)=>{
+        objInnerText[key] = '';
         //div 태그 추가
         const todoDiv = document.createElement('span');
         const todoInputText = document.createElement('input');
@@ -45,6 +53,10 @@ for (let i = 0; i < states.length; i++){
             todoDivIcons.appendChild(todoDelete);
 
             todoDiv.appendChild(todoDivIcons);
+            objInnerText[key] = todoInputText.value;
+            todoDiv.id = key;
+            
+            return todoInputText.value
         };
         
         // 새로 만들기를 제일 밑으로 보내기
@@ -63,14 +75,19 @@ for (let i = 0; i < states.length; i++){
         //삭제
         todoDelete.addEventListener('click', func=(e)=>{
             states[i].removeChild(todoDiv);
+            //DB에서 정보 삭제 (수정 필요)
+            localStorage.removeItem(e.innerText);
         })
 
         //리스트 이름 작성 -> 글씨로 바꾸기
-
         todoInputText.onkeyup = func=()=>{
             if (window.event.keyCode == 13){
                 console.log('enter pressed')
-                enterPressed();
+                const temp = enterPressed();
+                //DB 정보 전송 (수정 필요)
+                localStorage.setItem(temp, key)
+                //key 값 + 1
+                key ++
             }
         };
         
@@ -93,6 +110,7 @@ for (let i = 0; i < states.length; i++){
         })
     })
 
+    //drag and drop
     states[i].addEventListener('dragover', function(e){
         e.preventDefault();
     })
@@ -128,3 +146,23 @@ for (let i = 0; i < states.length; i++){
     }
 }
 
+//검색 기능 (중복되는 것 찾을 수 있도록 -> json 쓰기, 그냥 지우면 색 안 없어지는 것 처리)
+var timer;
+
+document.querySelector('.searchBox').addEventListener('input', function(e) {
+    if (timer) {
+        clearTimeout(timer);
+    }
+
+    timer = setTimeout(function() {
+        const id = localStorage.getItem(e.target.value);
+        document.getElementById(id).style.backgroundColor = 'rgba(255, 199, 199, 30)';
+
+        //엑스 버튼 누르면 모두 취소
+        const xBtn = document.querySelector('.Xbutton');
+        xBtn.addEventListener('click', function(){
+            document.getElementById(id).style.backgroundColor = 'white';
+            e.target.value = '';
+        })        
+    }, 200); 
+});

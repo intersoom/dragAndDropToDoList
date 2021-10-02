@@ -21,9 +21,12 @@ h3{
 }
 
 /*top bar*/
-
 .topBar{
     width: 80vw;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
 }
 
 .seperateHr{
@@ -31,6 +34,14 @@ h3{
     height: 3px;
     border-top: 2px solid rgb(15 15 15 / 10%);
     margin: 5px 0px 15px 0px;
+}
+
+.searchBox{
+    border: none;
+}
+
+.searchIcon{
+    color: rgb(15 15 15 / 50%);
 }
 
 /*list*/
