@@ -1,6 +1,7 @@
 //list 새로 만들기
 const states = document.querySelectorAll('.state');
 const addNew = document.querySelectorAll('.addNew');
+let count = [0, 0, 0, 0]
 let draggedItem = null;
 
 window.onload = function(){
@@ -11,7 +12,6 @@ let key = 0;
 let objInnerText = {}
 
 for (let i = 0; i < states.length; i++){
-    let count = 0;
     addNew[i].addEventListener('click', func=(e)=>{
         objInnerText[key] = '';
         //div 태그 추가
@@ -41,8 +41,8 @@ for (let i = 0; i < states.length; i++){
         states[i].appendChild(todoDiv);
         
         //todo 갯수 count 체크
-        count ++;
-        states[i].querySelector('.count').innerHTML = count;
+        count[i] ++;
+        states[i].querySelector('.count').innerHTML = count[i];
 
         //todo 내용 입력 후 엔터 입력시
         enterPressed=()=> {
@@ -77,9 +77,10 @@ for (let i = 0; i < states.length; i++){
 
         //삭제
         todoDelete.addEventListener('click', func=(e)=>{
-            states[i].removeChild(todoDiv);
-            count --;
-            states[i].querySelector('.count').innerHTML = count;
+            console.log(todoDiv.parentNode.classList[2])
+            count[todoDiv.parentNode.classList[2]] --;
+            todoDiv.parentElement.querySelector('.count').innerHTML = count[todoDiv.parentNode.classList[2]];
+            todoDiv.parentElement.removeChild(todoDiv)
         })
 
         //리스트 이름 작성 -> 글씨로 바꾸기
@@ -133,13 +134,13 @@ for (let i = 0; i < states.length; i++){
 
     //drag and drop 시 count 변경
     states[i].addEventListener('dragstart', function(e){
-        count --;
-        this.querySelector('.count').innerHTML = count;
+        count[i] --;
+        this.querySelector('.count').innerHTML = count[i];
     })
 
     states[i].addEventListener('dragend', function(e){
-        count ++;
-        this.querySelector('.count').innerHTML = count;
+        count[i] ++;
+        this.querySelector('.count').innerHTML = count[i];
     })
 
     
