@@ -51,6 +51,48 @@ h3{
     justify-content: center;
 }
 
+.stateName{
+    width: 50px;
+    font-size: 13px;
+    margin-bottom: 10px;
+    border-radius: 3px;
+    padding: 5px;
+    text-align: center;
+}
+
+.stateTitle{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    font-size: 13px;
+}
+
+.fa-inbox{
+    color: black;
+    margin-bottom: 10px;
+}
+
+.count{
+    font-size: 13px;
+    font-weight: bold;
+    color: #b3b2b0;
+    margin-bottom: 10px;
+    margin-left: 5px;
+}
+
+.beforeStateName{
+    background-color: #ffccd1;
+}
+
+.progressStateName{
+    background-color: #fbeecc;
+}
+
+.endStateName{
+    background-color: #cce7e1;
+}
+
 .todoInput{
     border: none;
     width: 100%;

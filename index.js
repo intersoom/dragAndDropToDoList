@@ -11,6 +11,7 @@ let key = 0;
 let objInnerText = {}
 
 for (let i = 0; i < states.length; i++){
+    let count = 0;
     addNew[i].addEventListener('click', func=(e)=>{
         objInnerText[key] = '';
         //div 태그 추가
@@ -39,6 +40,10 @@ for (let i = 0; i < states.length; i++){
         todoDiv.appendChild(todoInputText);
         states[i].appendChild(todoDiv);
         
+        //todo 갯수 count 체크
+        count ++;
+        states[i].querySelector('.count').innerHTML = count;
+
         //todo 내용 입력 후 엔터 입력시
         enterPressed=()=> {
             innerText.innerHTML = todoInputText.value;
@@ -55,8 +60,6 @@ for (let i = 0; i < states.length; i++){
             todoDiv.appendChild(todoDivIcons);
             objInnerText[key] = todoInputText.value;
             todoDiv.id = key;
-            
-            return todoInputText.value
         };
         
         // 새로 만들기를 제일 밑으로 보내기
@@ -75,17 +78,17 @@ for (let i = 0; i < states.length; i++){
         //삭제
         todoDelete.addEventListener('click', func=(e)=>{
             states[i].removeChild(todoDiv);
-            //DB에서 정보 삭제 (수정 필요)
-            localStorage.removeItem(e.innerText);
+            count --;
+            states[i].querySelector('.count').innerHTML = count;
         })
 
         //리스트 이름 작성 -> 글씨로 바꾸기
         todoInputText.onkeyup = func=()=>{
             if (window.event.keyCode == 13){
                 console.log('enter pressed')
-                const temp = enterPressed();
+                enterPressed();
                 //DB 정보 전송 (수정 필요)
-                localStorage.setItem(temp, key)
+                localStorage.setItem('DB', JSON.stringify(objInnerText));
                 //key 값 + 1
                 key ++
             }
@@ -114,12 +117,10 @@ for (let i = 0; i < states.length; i++){
     states[i].addEventListener('dragover', function(e){
         e.preventDefault();
     })
-    
-    states[i].addEventListener('dragenter', function(e){
-        e.preventDefault();
-    })
 
     states[i].addEventListener('dragenter', function(e){
+        e.preventDefault();
+        
         const afterElement = getDragAfterElement(states[i], e.clientY);
 
         if(afterElement == null){
@@ -129,6 +130,19 @@ for (let i = 0; i < states.length; i++){
             this.insertBefore(draggedItem, afterElement);
         }
     })
+
+    //drag and drop 시 count 변경
+    states[i].addEventListener('dragstart', function(e){
+        count --;
+        this.querySelector('.count').innerHTML = count;
+    })
+
+    states[i].addEventListener('dragend', function(e){
+        count ++;
+        this.querySelector('.count').innerHTML = count;
+    })
+
+    
 
     function getDragAfterElement(state, y){
         const draggableElements = [...state.querySelectorAll('.todo:not(.dragging)')];
@@ -147,22 +161,37 @@ for (let i = 0; i < states.length; i++){
 }
 
 //검색 기능 (중복되는 것 찾을 수 있도록 -> json 쓰기, 그냥 지우면 색 안 없어지는 것 처리)
-var timer;
+let timer;
+let searchKey;
 
 document.querySelector('.searchBox').addEventListener('input', function(e) {
     if (timer) {
         clearTimeout(timer);
     }
 
+    if (e.target.value !== searchKey){
+        document.querySelectorAll('.todo').forEach( todo => todo.style.backgroundColor = 'white');
+    }
+
     timer = setTimeout(function() {
-        const id = localStorage.getItem(e.target.value);
-        document.getElementById(id).style.backgroundColor = 'rgba(255, 199, 199, 30)';
+        let DB = localStorage.getItem('DB');
+        DB = JSON.parse(DB);
+
+        Object.keys(DB).forEach(function(k){
+            if (e.target.value == DB[k]){
+                console.log(k)
+                document.getElementById(k).style.backgroundColor = 'rgba(255, 199, 199, 30)';
+                searchKey = e.target.value;
+            }
+        })
 
         //엑스 버튼 누르면 모두 취소
         const xBtn = document.querySelector('.Xbutton');
         xBtn.addEventListener('click', function(){
-            document.getElementById(id).style.backgroundColor = 'white';
-            e.target.value = '';
+            Object.keys(DB).forEach(function(k){
+                document.getElementById(k).style.backgroundColor = 'white';
+                e.target.value = '';
+            })
         })        
     }, 200); 
 });
